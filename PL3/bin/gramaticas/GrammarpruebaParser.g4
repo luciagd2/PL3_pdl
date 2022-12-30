@@ -12,11 +12,11 @@ options {
 //Regla principal
 prog: ((expr|asign|func)FIN)*;
 
-//Regla de asignación
+//Regla de asignaciÃ³n
 asign: LET VAR (IG (expr|func))?
     |       VAR IG (expr|func)
     ;
-//Regla expresión -> devuelve uno de los tipos de datos
+//Regla expresiÃ³n -> devuelve uno de los tipos de datos
 expr:    PI expr PD
     |    expr EXP expr
     |    expr MULDIVMOD expr
@@ -55,3 +55,5 @@ retorno: RET(VAR|expr)? FIN;             //Return de una funcion
 
 //Regla sentencia -> componen los bloques de codigo
 sent: (asign|expr|func) FIN;            //Sentencias de un bloque de codigo
+//Regla de la condicion
+condicion: PI(OPNEG)?((expr(COMP|LOG)expr)|(PI(expr(COMP|LOG)expr)PD))*PD;
