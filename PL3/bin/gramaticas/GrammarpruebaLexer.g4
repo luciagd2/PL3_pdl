@@ -15,14 +15,16 @@ RET: 'return';
 VAL: 'val';
 PRINT: 'print';
 
-VAR: ([a-zA-Z]+)INT?;
+VAR: [a-z][a-zA-Z0-9_]*;
 COMP: '<'|'>'|'=='|'!='|'<='|'>=';
-LOG: '&&'|'||'|'##'|'!';
+LOG: '&&'|'||'|'##';
+OPNEG: '!';
 PI: '(';
 PD: ')';
 CI: '{';
 CD: '}';
 IG: '=';
+BB: '_';
 SUMRES: '+'|'-';
 MULDIVMOD: '*'|'/'|'%';
 EXP: '^';
@@ -35,8 +37,7 @@ fragment INT: [0-9]+;
 fragment FLOAT: INT('.'INT);
 
 TXT: '"' ().*? '"';
-
-POL:'\'' MON(('+'|'-')MON)* '\'';
+POL:'\''SUMRES?MON((SUMRES)?MON)*'\'';
 fragment MON: (CHR('^'INT)?)|INT;
 fragment CHR: [a-z];
 
