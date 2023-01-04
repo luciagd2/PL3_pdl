@@ -1,0 +1,41 @@
+%%% Esto es un ejemplo de programa en pdlcalc
+
+function mifun(mensaje, valor){
+	let datos;
+	let ndatos = valor * 2;
+	return;
+};
+
+function tufun(){
+	print ("llamada a tu fun");
+};
+
+function sumatorio (desde, hasta, polinomio) 
+{
+	if (desde>hasta){
+		let swap = desde;
+		desde=hasta;
+		hasta =       
+			
+			swap;
+	};
+
+	let acumulador = 0;
+	let contador = desde;
+	while ( contador <= hasta && desde == desde *** podría haber más ***) 
+		{
+		acumulador = acumulador + val(polinomio,'x',contador *** para cada variable ***);
+		contador = contador + 1;
+		};
+
+	return 
+acumulador;
+};
+
+function test(){
+mifun("hola",23);
+tufun();
+let mipoli='x^6+x^2-x+6'
+let rdo = sumatorio(1,5,mipoli);
+print (23 + rdo);
+};
