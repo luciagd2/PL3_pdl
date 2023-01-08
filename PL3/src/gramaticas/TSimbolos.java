@@ -1,11 +1,13 @@
 package gramaticas;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TSimbolos {
 	
 	private Function main;
-	private ArrayList<Function> funciones;
+	private ArrayList<HashMap<String,Function>> funciones;
 	private Function funcionTemp;
 	
 	
@@ -23,7 +25,6 @@ public class TSimbolos {
 	}
 	/**
 	 * Funcion para inicializar el programa
-	 * @param programa
 	 */
 	public void setPrograma(Function main)
 	{
@@ -31,12 +32,14 @@ public class TSimbolos {
 	}
 	
 	/**
-	 * Añadir la funcion a la estructura donde guardaremos todas las funciones del fichero
+	 * Aï¿½adir la funcion a la estructura donde guardaremos todas las funciones del fichero
 	 * @param funcion
 	 */
 	public void addFunction(Function funcion)
 	{
-		funciones.add(funcion);
+		String nombre = funcion.getNombre();
+		funciones.add(new HashMap<>());
+		funciones.get(funciones.size()-1).put(nombre,funcion);
 	}
 	/**
 	 * Funcion para definir el main del fichero en cuestion
@@ -62,7 +65,7 @@ public class TSimbolos {
 	 */
 	public Function getFuncion(int indice)
 	{
-		return funciones.get(indice);
+		return funciones.get(indice).get(1);
 	}
 	/**
 	 * 
@@ -94,7 +97,6 @@ public class TSimbolos {
 	/**
 	 * Inicializo variable sin valor asignado
 	 * @param variable
-	 * @param valor
 	 */
 	public void addVariable(String variable)
 	{
@@ -105,6 +107,23 @@ public class TSimbolos {
 		else
 		{
 			main.addVariable(variable,"");
+		}
+	}
+	public void ejecutar(Function funcion){
+		for (int i = 0; i<funcion.getBloqueCodigo().size();i++){
+			Tripleta linea = funcion.getBloqueCodigo().get(i);
+			if(linea.getAccion().equals("print")){
+				String valor = linea.getParametro1();
+				if(valor.matches("^[a-z]*$")){
+					valor = funcion.getVariables(valor);
+				}
+				if (valor.contains("\"")){
+					valor = valor.replaceAll("\"","");
+				} else if (valor.contains("\'")){
+					valor = valor.replaceAll("\'","");
+				}
+				System.out.println(valor);
+			}
 		}
 	}
 	

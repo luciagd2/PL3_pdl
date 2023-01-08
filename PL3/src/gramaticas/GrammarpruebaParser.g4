@@ -12,11 +12,11 @@ options {
 //Regla principal
 prog: ((expr|asign|func)FIN)* #programa ;
 
-//Regla de asignación
+//Regla de asignaciï¿½n
 asign: LET VAR (IG (expr|func))? #initVariable
     |       VAR IG (expr|func) #asigVariable
     ;
-//Regla expresión -> devuelve uno de los tipos de datos
+//Regla expresiï¿½n -> devuelve uno de los tipos de datos
 expr:    PI expr PD				#expEntreParentesis
     |    expr EXP expr			#exponente
     |    expr SUMRES expr	 	#sumRes
@@ -25,12 +25,12 @@ expr:    PI expr PD				#expEntreParentesis
     |    TXT					#texto
     |    POL					#polinomio
     |    VAR					#variable
-    |    VAL PI (POL|VAR) (COMA POL COMA (NUM|VAR))* PD	#valor
+    |    evalPol                #valor
     |	 llamFunc				#llamadaFuncion
     ;
 
 //Regla con las funciones o llamadas a funciones del lenguaje
-
+evalPol:  VAL PI (POL|VAR) (COMA POL COMA (NUM|VAR))* PD;
 func:       FUNCT VAR declVFunc bloq_cod #funcion;
 bifur: 	IF PI (condicionCompuesta|condicion) PD bloq_cod;
 bucle :  WHILE PI logico PD bloq_cod;

@@ -9,18 +9,17 @@ public class Function {
 	private String nombre;
 	private ArrayList<String> argumentos;
 	private HashMap<String,String> variables;
-	private ArrayList<String> bloqueCodigo;
+	private ArrayList<Tripleta> bloqueCodigo;
+	//private HashMap<String,HashMap<String,String>> bloqueCodigo;
 	
 	/**
 	 * Constructor principal
-	 * @param variableRetorno
 	 * @param nombre
-	 * @param argumentos
 	 */
-	public Function(String nombre,ArrayList<String> bloqueCodigo){
+	public Function(String nombre){
 		this.nombre = nombre;
 		this.variables = new HashMap<String, String>();
-		this.bloqueCodigo = bloqueCodigo;
+		bloqueCodigo = new ArrayList<Tripleta>();
 		
 		
 	}
@@ -66,7 +65,7 @@ public class Function {
 		return argumentos.get(indice);
 	}
 	/**
-	 * Metodo para añadir una nueva variable que ha aparecido en la lectura 
+	 * Metodo para aï¿½adir una nueva variable que ha aparecido en la lectura 
 	 * @param variable
 	 */
 	public void addVariable(String variable, String valor)
@@ -81,12 +80,81 @@ public class Function {
 	{
 		return variables.size();
 	}
+
+	public String getVariables(String clave) {
+		return variables.get(clave);
+	}
+
 	/**
 	 * 
 	 * @param linea
 	 */
 	public void addLineaCod(String linea) {
-		
-		bloqueCodigo.add(linea);
+		String accion = "";
+		String parametro1 ="";
+		String parametro2 ="";
+
+		if (linea.contains("print")){
+			accion = "print";
+			parametro1 = linea.substring(6,linea.indexOf(')'));
+			bloqueCodigo.add(new Tripleta(accion,parametro1));
+		} else if (linea.contains("while")) {
+			accion = "while";
+			parametro1 = linea.substring(6,linea.indexOf(')'));
+			parametro2 = String.valueOf(bloqueCodigo.size());
+			bloqueCodigo.add(new Tripleta(accion,parametro1,parametro2));
+		} else if (linea.contains("exit")) {
+			accion = "exit";
+			bloqueCodigo.add(new Tripleta(accion));
+		} else if (linea.contains("if")) {
+			accion = "if";
+			parametro1 = linea.substring(6,linea.indexOf(')'));
+			bloqueCodigo.add(new Tripleta(accion,parametro1));
+		} else if (linea.contains("=")) {
+			accion = "asignar";
+			parametro1 = linea.substring(0,linea.indexOf('='));
+			if(linea.contains("+")){
+				parametro2 = "operacion";
+				bloqueCodigo.add(new Tripleta(accion,parametro1, parametro2));
+
+				bloqueCodigo.add(new Tripleta("+",linea.substring(0,linea.indexOf('+')),linea.substring(linea.indexOf('+')+1)));
+
+			}else if(linea.contains("-")){
+				parametro2 = "operacion";
+				bloqueCodigo.add(new Tripleta(accion,parametro1, parametro2));
+
+				bloqueCodigo.add(new Tripleta("-",linea.substring(0,linea.indexOf('-')),linea.substring(linea.indexOf('-')+1)));
+			}else if(linea.contains("*")){
+				parametro2 = "operacion";
+				bloqueCodigo.add(new Tripleta(accion,parametro1, parametro2));
+
+				bloqueCodigo.add(new Tripleta("*",linea.substring(0,linea.indexOf('*')),linea.substring(linea.indexOf('*')+1)));
+			}else if(linea.contains("/")){
+				parametro2 = "operacion";
+				bloqueCodigo.add(new Tripleta(accion,parametro1, parametro2));
+
+				bloqueCodigo.add(new Tripleta("/",linea.substring(0,linea.indexOf('/')),linea.substring(linea.indexOf('/')+1)));
+			}else if(linea.contains("%")){
+				parametro2 = "operacion";
+				bloqueCodigo.add(new Tripleta(accion,parametro1, parametro2));
+
+				bloqueCodigo.add(new Tripleta("%",linea.substring(0,linea.indexOf('%')),linea.substring(linea.indexOf('&')+1)));
+			}else if(linea.contains("^")){
+				parametro2 = "operacion";
+				bloqueCodigo.add(new Tripleta(accion,parametro1, parametro2));
+
+				bloqueCodigo.add(new Tripleta("^",linea.substring(0,linea.indexOf('^')),linea.substring(linea.indexOf('^')+1)));
+			} else{
+				parametro2 = linea.substring(linea.indexOf("="+1,linea.length()));
+				bloqueCodigo.add(new Tripleta(accion,parametro1, parametro2));
+			}
+		}
+	}
+	public int getTotalLineasCod(){
+		return this.bloqueCodigo.size();
+	}
+
+	public ArrayList<Tripleta> getBloqueCodigo() {
+		return bloqueCodigo;
 	}
 }
